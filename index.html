@@ -38,7 +38,13 @@
   footer { margin-top: auto; padding-top: 24px; text-align: center; color: var(--muted); font-size: .9rem; }
   #start-screen .instructions p { margin-bottom: 12px; }
   #app { display: none; }
-  .footer-logo { max-width: 100%; height: auto; margin-top: 20px; max-height: 90px; }
+  .footer-logo {
+    display: block;
+    max-width: 700px; /* Ancho máximo del logo */
+    width: 90%;       /* Ancho responsive */
+    height: auto;     /* Mantiene la proporción */
+    margin: 20px auto 0; /* Centra el logo */
+  }
   @media (min-width: 520px){ .controls { flex-wrap: nowrap; } }
 </style>
 </head>
