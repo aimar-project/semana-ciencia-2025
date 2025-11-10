@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mitos y realidades sobre el envejecimiento cognitivo</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#0b3a75; --text:#1a1a1a; --accent:#1e5aa8; --ok:#1b9e77; --bad:#d53e4f; --muted:#6b7280;
+    --btn:#0b3a75; --btn-text:#ffffff; --card:#f5f7fb; --focus:#ff8a00;
+    --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family:var(--font); }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; min-height: 100vh; box-sizing: border-box; }
+  .wrap:fullscreen { background: var(--bg); overflow-y: auto; }
+  header { padding: 12px 0 4px; }
+  h1 { font-size: 1.6rem; color: var(--fg); margin: 0 0 6px; line-height: 1.25; }
+  p.lead { font-size: 1.05rem; color: var(--text); margin: 0 0 12px; }
+  .bar { display:flex; align-items:center; gap:12px; justify-content:space-between; margin: 8px 0 16px; flex-wrap: wrap; }
+  .bar small { color: var(--muted); }
+  button, .btn { background: var(--btn); color: var(--btn-text); border: none; padding: 14px 16px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 1.05rem; width: 100%; box-sizing: border-box; }
+  button:focus { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+  .card { background: var(--card); border-radius: 14px; padding: 16px; }
+  .q { font-size: 1.2rem; font-weight: 600; color: var(--fg); margin-bottom: 16px; }
+  .options { display:grid; gap: 12px; }
+  .opt { border:2px solid #d1d5db; background:#fff; color:#111; border-radius:12px; padding:14px; font-size:1.05rem; text-align:left; }
+  .opt:hover { border-color: var(--accent); }
+  .opt.correct { border-color: var(--ok); background-color: #f0fdf4; box-shadow: 0 0 0 2px var(--ok); }
+  .opt.wrong { border-color: var(--bad); background-color: #fef2f2; box-shadow: 0 0 0 2px var(--bad); }
+  .feedback { margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 1rem; }
+  .feedback.ok { background-color: #f0fdf4; color: #14532d; }
+  .feedback.bad { background-color: #fef2f2; color: #991b1b; }
+  .feedback strong { display: block; margin-bottom: 4px; }
+  .controls { display:flex; gap:10px; flex-wrap: wrap; margin-top: 16px; }
+  .progress { height: 10px; background: #e5e7eb; border-radius: 99px; overflow: hidden; }
+  .progress > div { height: 100%; background: var(--accent); width: 0%; transition: width .3s ease; }
+  footer { margin-top: auto; padding-top: 24px; text-align: center; color: var(--muted); font-size: .9rem; }
+  #start-screen ul { padding-left: 20px; }
+  #start-screen li { margin-bottom: 10px; }
+  #app { display: none; }
+  #fullscreen-btn { width: auto; padding: 8px; line-height: 0; }
+  #fullscreen-btn svg { width: 20px; height: 20px; stroke: var(--accent); }
+  @media (min-width: 520px){ .controls { flex-wrap: nowrap; } }
+</style>
+</head>
+<body>
+
+<div id="start-screen" class="wrap">
+    <main>
+        <h1>¡Bienvenido/a al Test de Mitos sobre el Envejecimiento!</h1>
+        <div class="card">
+            <h2>Instrucciones</h2>
+            <ul>
+                <li>A continuación, te presentamos un breve cuestionario de <strong>10 preguntas</strong> para desmontar algunas creencias erróneas sobre el envejecimiento cognitivo.</li>
+                <li>Para cada pregunta, lee las cuatro opciones y <strong>selecciona la que consideres correcta</strong>.</li>
+                <li>Recibirás una <strong>explicación inmediata</strong> después de cada respuesta. ¡No hay respuestas incorrectas, solo oportunidades para aprender!</li>
+            </ul>
+            <div class="controls">
+                <button id="start-btn" class="btn" type="button">Comenzar</button>
+            </div>
+        </div>
+    </main>
+    <footer>Actividad de la Semana de la Ciencia y la Innovación 2025.</footer>
+</div>
+
+<div id="app" class="wrap">
+  <header>
+    <h1>Mitos y Realidades del Envejecimiento</h1>
+    <div class="bar">
+      <small id="counter">Pregunta 1 de 10</small>
+      <button id="fullscreen-btn" class="btn-secondary" type="button" title="Poner en pantalla completa">
+        <svg id="fullscreen-icon-enter" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0L15 15" /></svg>
+        <svg id="fullscreen-icon-exit" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" style="display:none;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9V4.5M15 9h4.5M15 9l5.25-5.25M15 15v4.5M15 15h4.5M15 15l5.25 5.25" /></svg>
+      </button>
+    </div>
+    <div class="progress" aria-hidden="true"><div id="prog"></div></div>
+  </header>
+
+  <main id="stage"></main>
+
+  <footer>Actividad de la Semana de la Ciencia y la Innovación 2025.</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const QUESTIONS = [
+    { q: "Con la edad, es inevitable acabar desarrollando demencia.", options: [{t:"La demencia es una enfermedad, no una parte normal del envejecimiento.",ok:true}, {t:"Es una consecuencia inevitable de cumplir años.",ok:false}, {t:"Solo ocurre si tienes mala genética.",ok:false}, {t:"Afecta a todas las personas a partir de los 85 años.",ok:false}], explain: "La demencia es causada por enfermedades, no por cumplir años. La mayoría de las personas mayores son autónomas y no la desarrollan." },
+    { q: "Los pequeños olvidos, como no recordar un nombre al instante, significan que estoy empezando a tener demencia.", options: [{t:"Existen cambios leves en la memoria asociados a la edad que no impiden llevar una vida normal.",ok:true}, {t:"Cualquier olvido es una señal de alarma que requiere consulta inmediata.",ok:false}, {t:"Es preocupante solo si ocurre más de una vez a la semana.",ok:false}, {t:"Es un proceso normal únicamente en personas menores de 65 años.",ok:false}], explain: "Es normal que el cerebro necesite más tiempo para recuperar información. La alarma es cuando los olvidos afectan a las actividades diarias de forma significativa." },
+    { q: "Una vez que te haces mayor, ya no puedes aprender cosas nuevas como usar la tecnología.", options: [{t:"El cerebro mantiene su capacidad de aprender durante toda la vida.",ok:true}, {t:"El cerebro pierde toda su capacidad de aprendizaje con la edad.",ok:false}, {t:"Solo se pueden aprender cosas nuevas con suplementos especiales.",ok:false}, {t:"La capacidad de aprender se limita a los idiomas en la vejez.",ok:false}], explain: "El cerebro es plástico y capaz de aprender a cualquier edad. De hecho, más del 41% de los mayores de 65 años usan internet y se adaptan a nuevas tecnologías." },
+    { q: "Las personas mayores se vuelven cascarrabias y de mal humor con la edad.", options: [{t:"La personalidad de una persona no suele cambiar por el hecho de envejecer.",ok:true}, {t:"Es un cambio hormonal inevitable que agria el carácter.",ok:false}, {t:"La pérdida de memoria siempre causa mal humor.",ok:false}, {t:"Las personas mayores siempre se vuelven más alegres.",ok:false}], explain: "El carácter se forma con las experiencias de vida, no con la edad. El mal humor no es un resultado del proceso de envejecimiento." },
+    { q: "Para mantener el cerebro sano, lo único que funciona es hacer muchos crucigramas y sudokus.", options: [{t:"Un estilo de vida activo (físico, social y mental) es la estrategia más completa y eficaz.",ok:true}, {t:"Hacer crucigramas es el único método probado para evitar la demencia.",ok:false}, {t:"Los ejercicios mentales no sirven para nada si no se combinan con medicación.",ok:false}, {t:"Es necesario hacer al menos cinco sudokus al día para que funcione.",ok:false}], explain: "La prevención es multifactorial. La actividad física, no aislarse, y controlar la salud son tan importantes o más que los ejercicios mentales." },
+    { q: "Las personas mayores necesitan dormir mucho menos que los jóvenes.", options: [{t:"Aunque el patrón de sueño cambie, se siguen necesitando entre 6 y 7 horas de calidad.",ok:true}, {t:"Con 4 o 5 horas de sueño es suficiente para un cerebro sano.",ok:false}, {t:"Las personas mayores pueden pasar días sin dormir sin consecuencias.",ok:false}, {t:"Necesitan dormir más de 10 horas para estar sanos.",ok:false}], explain: "El patrón de sueño puede cambiar, pero la necesidad de un descanso reparador sigue siendo fundamental para la salud cognitiva." },
+    { q: "Si en mi familia no hay nadie con demencia, yo no la tendré.", options: [{t:"La genética es solo un factor; el estilo de vida y la salud general influyen muchísimo.",ok:true}, {t:"Es una enfermedad puramente genética, por lo que el riesgo es cero sin antecedentes.",ok:false}, {t:"Si no hay antecedentes, solo el tabaco puede causar demencia.",ok:false}, {t:"La genética determina más del 90% del riesgo de padecerla.",ok:false}], explain: "Casi la mitad de los casos de demencia podrían prevenirse o retrasarse actuando sobre factores modificables como la dieta o el ejercicio." },
+    { q: "La depresión en una persona mayor es una reacción normal a la vejez y no hay que tratarla.", options: [{t:"La depresión es una enfermedad tratable a cualquier edad y no es una parte normal del envejecimiento.",ok:true}, {t:"Es una reacción normal a la vejez que no requiere tratamiento.",ok:false}, {t:"Se pasa sola con el tiempo, sin necesidad de ayuda profesional.",ok:false}, {t:"Solo se puede tratar con medicación muy fuerte y adictiva.",ok:false}], explain: "La depresión afecta al bienestar y a la cognición, y tiene tratamiento eficaz. Es importante buscar ayuda profesional." },
+    { q: "Las personas mayores pierden el interés en el sexo y las relaciones íntimas.", options: [{t:"La necesidad de intimidad y la sexualidad pueden continuar durante toda la vida.",ok:true}, {t:"Es una consecuencia biológica inevitable de la edad.",ok:false}, {t:"Es perjudicial para la salud mantener relaciones íntimas en la vejez.",ok:false}, {t:"El interés desaparece por completo en las mujeres, pero no en los hombres.",ok:false}], explain: "La sexualidad es una faceta importante del ser humano a cualquier edad. Aunque puede cambiar, no desaparece necesariamente." },
+    { q: "Tener un nivel educativo alto es lo único que protege contra la demencia.", options: [{t:"La educación ayuda a crear 'reserva cognitiva', pero es solo uno de los múltiples factores protectores.",ok:true}, {t:"Tener estudios universitarios te protege completamente de la demencia.",ok:false}, {t:"La educación no tiene ninguna influencia en el riesgo de demencia.",ok:false}, {t:"Solo protege si se sigue estudiando activamente después de los 60.",ok:false}], explain: "La educación es un factor protector, pero también lo son la hipertensión, la pérdida auditiva o el aislamiento social. La mejor estrategia es actuar sobre varios." }
+  ];
+
+  let idx = 0, score = 0, answered = false;
+  let currentShuffledOptions = [];
+
+  const startScreen = document.getElementById('start-screen');
+  const app = document.getElementById('app');
+  const startBtn = document.getElementById('start-btn');
+  const stage = document.getElementById('stage');
+  const counter = document.getElementById('counter');
+  const prog = document.getElementById('prog');
+  const fullscreenBtn = document.getElementById('fullscreen-btn');
+  const fsIconEnter = document.getElementById('fullscreen-icon-enter');
+  const fsIconExit = document.getElementById('fullscreen-icon-exit');
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  function renderQuestion(){
+    answered = false;
+    const q = QUESTIONS[idx];
+    counter.textContent = `Pregunta ${idx + 1} de ${QUESTIONS.length}`;
+    prog.style.width = `${((idx) / QUESTIONS.length) * 100}%`;
+    currentShuffledOptions = [...q.options];
+    shuffle(currentShuffledOptions);
+
+    stage.innerHTML = `
+      <section class="card" role="group" aria-labelledby="qtext">
+        <div class="q" id="qtext">${q.q}</div>
+        <div class="options" role="list">
+          ${currentShuffledOptions.map((o, i) => `
+            <button class="opt" type="button" role="listitem" data-i="${i}">
+              <span>${String.fromCharCode(65 + i)}.</span> ${o.t}
+            </button>
+          `).join('')}
+        </div>
+        <div id="feedback-container"></div>
+      </section>
+    `;
+  }
+
+  function handleAnswer(optBtn) {
+    if (answered) return;
+    answered = true;
+    const i = Number(optBtn.dataset.i);
+    const q = QUESTIONS[idx];
+    const isOk = currentShuffledOptions[i].ok;
+
+    stage.querySelectorAll('.opt').forEach((b, j) => {
+      b.disabled = true;
+      if (currentShuffledOptions[j].ok) b.classList.add('correct');
+      else if (j === i) b.classList.add('wrong');
+    });
+
+    if (isOk) score++;
+    
+    document.getElementById('feedback-container').innerHTML = `
+      <div class="feedback ${isOk ? 'ok' : 'bad'}">
+        <strong>${isOk ? '¡Correcto!' : 'Respuesta incorrecta.'}</strong>
+        ${q.explain}
+      </div>
+      <div class="controls">
+        <button id="nextBtn" class="btn" type="button">${idx < QUESTIONS.length - 1 ? 'Siguiente Pregunta' : 'Ver Resultados'}</button>
+      </div>
+    `;
+  }
+
+  function goNext() {
+    if (idx < QUESTIONS.length - 1) {
+      idx++;
+      renderQuestion();
+    } else {
+      renderEnd();
+    }
+  }
+
+  function renderEnd() {
+    prog.style.width = '100%';
+    stage.innerHTML = `
+      <section class="card" role="region" aria-labelledby="endtitle">
+        <h2 id="endtitle" style="margin-top:0; color: var(--fg);">Resultados Finales</h2>
+        <p style="font-size: 1.2rem;">Has acertado <strong>${score}</strong> de <strong>${QUESTIONS.length}</strong> preguntas.</p>
+        <p>¡Gracias por participar! Cuidar tu salud cerebral es una carrera de fondo que se construye con hábitos saludables cada día.</p>
+        <div class="controls">
+          <button id="restartBtn" class="btn-secondary" type="button">Volver a empezar</button>
+        </div>
+      </section>
+    `;
+  }
+
+  function toggleFullscreen() {
+    const elem = document.querySelector('.wrap#app');
+    if (!document.fullscreenElement) {
+      if (elem.requestFullscreen) elem.requestFullscreen();
+      else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+      else if (elem.mozRequestFullScreen) elem.mozRequestFullScreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+    }
+  }
+  
+  function updateFullscreenIcon() {
+      if (document.fullscreenElement) {
+        fsIconEnter.style.display = 'none';
+        fsIconExit.style.display = 'block';
+      } else {
+        fsIconEnter.style.display = 'block';
+        fsIconExit.style.display = 'none';
+      }
+  }
+
+  // Event Listeners
+  startBtn.addEventListener('click', () => {
+    startScreen.style.display = 'none';
+    app.style.display = 'flex';
+    renderQuestion();
+  });
+  
+  fullscreenBtn.addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', updateFullscreenIcon);
+
+  app.addEventListener('click', function(e) {
+    const opt = e.target.closest('.opt');
+    if (opt && !answered) { handleAnswer(opt); return; }
+
+    const next = e.target.closest('#nextBtn');
+    if (next) { goNext(); return; }
+
+    const restart = e.target.closest('#restartBtn');
+    if (restart) { idx = 0; score = 0; renderQuestion(); return; }
+  });
+});
+</script>
+</body>
+</html>
